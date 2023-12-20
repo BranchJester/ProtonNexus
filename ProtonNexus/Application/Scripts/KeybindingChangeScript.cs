@@ -46,7 +46,7 @@ public class KeybindingChangeScript : BaseScript
             {
                 try
                 {
-                    if (Game.IsKeyPressed(key) && key != Keys.Tab && !IsModifierKey(key))
+                    if (Game.IsKeyPressed(key) && key != Keys.PageUp && !IsModifierKey(key))
                     {
                         // Update display text and set the keybinding in the hotkeys config file through the service
                         _displayKeyInfo.Caption = $"{modifierKeys}{key}";
@@ -91,7 +91,7 @@ public class KeybindingChangeScript : BaseScript
     private void OnKeyDown(object sender, KeyEventArgs e)
     {
         // Toggle key waiting state and update message when Space is pressed and a menu is open
-        if (e.KeyCode == Keys.Tab && MenuManager.CurrentMenu is not null)
+        if (e.KeyCode == Keys.PageUp && MenuManager.CurrentMenu is not null)
         {
             _isWaitingForKey = !_isWaitingForKey;
             _displayKeyInfo.Caption = "Press a key...";

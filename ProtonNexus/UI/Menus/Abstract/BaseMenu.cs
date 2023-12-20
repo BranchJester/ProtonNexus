@@ -1,11 +1,13 @@
 using System;
 using System.Drawing;
+using System.Windows.Forms;
 using GTA;
 using LemonUI.Menus;
 using LemonUI.Scaleform;
 using ProtonNexus.Application.Extensions;
 using ProtonNexus.Application.Managers;
 using ProtonNexus.Core.Application.Interfaces;
+using Control = GTA.Control;
 
 namespace ProtonNexus.UI.Menus.Abstract;
 
@@ -17,8 +19,11 @@ public abstract class BaseMenu : NativeMenu
     {
         MenuName = menuName;
         Banner.Color = Color.FromArgb(255, 0, 0, 0);
-        var instructionalButton = new InstructionalButton("Change Hotkey", Control.SelectWeapon);
-        Buttons.Add(instructionalButton);
+        var usageInstructionalButton = new InstructionalButton("Change Usage Hotkey: PageDown", "");
+        Buttons.Add(usageInstructionalButton);
+        
+        var activationInstructionalButton = new InstructionalButton("Change Activation Hotkey: PageUp", "");
+        Buttons.Add(activationInstructionalButton);
 
         Shown += OnShown;
         Closed += OnClosed;
