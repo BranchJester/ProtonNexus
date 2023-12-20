@@ -73,15 +73,18 @@
         <Compile Include="Application\Managers\MenuManager.cs"/>
         <Compile Include="Application\Managers\ServiceManager.cs"/>
         <Compile Include="Application\Scripts\Abstract\BaseScript.cs"/>
-        <Compile Include="Application\Scripts\KeybindingChangeScript.cs" />
+        <Compile Include="Application\Scripts\KeybindingChangeScript.cs"/>
         <Compile Include="Application\Scripts\MainScript.cs"/>
+        <Compile Include="Application\Scripts\Player\PlayerScript.cs"/>
         <Compile Include="Application\StateHandlers\IStateHandler.cs"/>
         <Compile Include="Application\StateHandlers\PlayerStateHandler.cs"/>
         <Compile Include="Application\StateHandlers\VehicleStateHandler.cs"/>
         <Compile Include="Application\StateHandlers\WeaponStateHandler.cs"/>
         <Compile Include="Constants\Path.cs"/>
         <Compile Include="Core\Application\Interfaces\IHotkeysService.cs"/>
+        <Compile Include="Core\Application\Interfaces\IPlayerService.cs"/>
         <Compile Include="Core\Application\Services\HotkeysService.cs"/>
+        <Compile Include="Core\Application\Services\PlayerService.cs"/>
         <Compile Include="Core\Domain\Enums\MenuEnum.cs"/>
         <Compile Include="Core\Domain\Enums\PlayerEnum.cs"/>
         <Compile Include="Core\Domain\Enums\SectionEnum.cs"/>
@@ -97,6 +100,7 @@
         <Compile Include="Properties\AssemblyInfo.cs"/>
         <Compile Include="UI\Menus\Abstract\BaseMenu.cs"/>
         <Compile Include="UI\Menus\MainMenu.cs"/>
+        <Compile Include="UI\Menus\Player\PlayerMenu.cs"/>
     </ItemGroup>
     <ItemGroup>
         <None Include="App.config"/>
@@ -106,9 +110,7 @@
         <Content Include="hotkeys.ini"/>
     </ItemGroup>
     <ItemGroup>
-        <Folder Include="Application\Scripts\Player\"/>
         <Folder Include="UI\CustomItems\"/>
-        <Folder Include="UI\Menus\Player\"/>
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

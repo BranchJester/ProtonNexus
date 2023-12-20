@@ -23,9 +23,17 @@ public abstract class BaseMenu : NativeMenu
         Shown += OnShown;
         Closed += OnClosed;
         HotkeysService.HotkeyChanged += OnHotkeyChanged;
+
+        // This is called when the menu manager has created all menus.
+        MenuManager.OnMenuInitialized += InitializeItems;
     }
 
-    public string MenuName { get; set; }
+    protected string MenuName { get; set; }
+
+    /// <summary>
+    ///     Initializes the items of the menu.
+    /// </summary>
+    protected abstract void InitializeItems();
 
     private void OnHotkeyChanged(string section, string keyName, string newKey)
     {
