@@ -2,6 +2,24 @@
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props"
             Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')"/>
+
+    <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+        <!-- Create the MoleQ directory if it doesn't exist -->
+        <Exec Command="if not exist &quot;C:\Program Files (x86)\Steam\steamapps\common\Grand Theft Auto V\scripts\ProtonNexus&quot; mkdir &quot;C:\Program Files (x86)\Steam\steamapps\common\Grand Theft Auto V\scripts\ProtonNexus&quot;" ContinueOnError="true"/>
+
+        <!-- Copy the .dll file to the new directory -->
+        <Copy SourceFiles="$(TargetDir)$(TargetName).dll" DestinationFolder="C:\Program Files (x86)\Steam\steamapps\common\Grand Theft Auto V\scripts\ProtonNexus"/>
+        <Copy SourceFiles="$(TargetDir)Newtonsoft.Json.dll" DestinationFolder="C:\Program Files (x86)\Steam\steamapps\common\Grand Theft Auto V\scripts"/>
+        <Copy SourceFiles="C:\Datamatiker\GTA\ProtonNexus\ProtonNexus\hotkeys.ini" DestinationFolder="C:\Program Files (x86)\Steam\steamapps\common\Grand Theft Auto V\scripts\ProtonNexus"/>
+
+        <Exec Command="if not exist &quot;C:\Program Files (x86)\GTA - Backup\scripts\ProtonNexus&quot; mkdir &quot;C:\Program Files (x86)\GTA - Backup\scripts\ProtonNexus&quot;" ContinueOnError="true"/>
+
+        <!-- Copy the .dll file to the new directory -->
+        <Copy SourceFiles="$(TargetDir)$(TargetName).dll" DestinationFolder="C:\Program Files (x86)\GTA - Backup\scripts\ProtonNexus"/>
+        <Copy SourceFiles="$(TargetDir)Newtonsoft.Json.dll" DestinationFolder="C:\Program Files (x86)\GTA - Backup\scripts"/>
+        <Copy SourceFiles="C:\Datamatiker\GTA\ProtonNexus\ProtonNexus\hotkeys.ini" DestinationFolder="C:\Program Files (x86)\GTA - Backup\scripts\ProtonNexus"/>
+    </Target>
+
     <PropertyGroup>
         <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
         <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -11,6 +29,7 @@
         <RootNamespace>ProtonNexus</RootNamespace>
         <AssemblyName>ProtonNexus</AssemblyName>
         <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
+        <LangVersion>latest</LangVersion>
         <FileAlignment>512</FileAlignment>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -34,25 +53,58 @@
     </PropertyGroup>
     <ItemGroup>
         <Reference Include="LemonUI.SHVDN3, Version=1.10.0.0, Culture=neutral, processorArchitecture=Amd64">
-          <HintPath>..\packages\LemonUI.SHVDN3.1.10.0\lib\net48\LemonUI.SHVDN3.dll</HintPath>
+            <HintPath>..\packages\LemonUI.SHVDN3.1.10.0\lib\net48\LemonUI.SHVDN3.dll</HintPath>
         </Reference>
         <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-          <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+            <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
         </Reference>
         <Reference Include="ScriptHookVDotNet3, Version=3.6.0.0, Culture=neutral, processorArchitecture=Amd64">
-          <HintPath>..\packages\ScriptHookVDotNet3.3.6.0\lib\net48\ScriptHookVDotNet3.dll</HintPath>
+            <HintPath>..\packages\ScriptHookVDotNet3.3.6.0\lib\net48\ScriptHookVDotNet3.dll</HintPath>
         </Reference>
         <Reference Include="System"/>
         <Reference Include="System.Core"/>
         <Reference Include="System.Data"/>
+        <Reference Include="System.Drawing"/>
+        <Reference Include="System.Windows.Forms"/>
         <Reference Include="System.Xml"/>
     </ItemGroup>
     <ItemGroup>
+        <Compile Include="Application\Managers\MenuManager.cs"/>
+        <Compile Include="Application\Managers\ServiceManager.cs"/>
+        <Compile Include="Application\Scripts\Abstract\BaseScript.cs"/>
+        <Compile Include="Application\Scripts\MainScript.cs"/>
+        <Compile Include="Application\StateHandlers\IStateHandler.cs"/>
+        <Compile Include="Application\StateHandlers\PlayerStateHandler.cs"/>
+        <Compile Include="Application\StateHandlers\VehicleStateHandler.cs"/>
+        <Compile Include="Application\StateHandlers\WeaponStateHandler.cs"/>
+        <Compile Include="Constants\Path.cs"/>
+        <Compile Include="Core\Application\Interfaces\IHotkeysService.cs"/>
+        <Compile Include="Core\Application\Services\HotkeysService.cs"/>
+        <Compile Include="Core\Domain\Enums\MenuEnum.cs"/>
+        <Compile Include="Core\Domain\Enums\PlayerEnum.cs"/>
+        <Compile Include="Core\Domain\Enums\SectionEnum.cs"/>
+        <Compile Include="Core\Domain\Enums\SettingsEnum.cs"/>
+        <Compile Include="Core\Domain\Enums\TeleportEnum.cs"/>
+        <Compile Include="Core\Domain\Enums\VehicleEnum.cs"/>
+        <Compile Include="Core\Domain\Enums\VehicleSpawnerEnum.cs"/>
+        <Compile Include="Core\Domain\Enums\WeaponEnum.cs"/>
+        <Compile Include="Core\Domain\Exceptions\BlipNotFoundException.cs"/>
+        <Compile Include="Core\Domain\Exceptions\VehicleNotFoundException.cs"/>
+        <Compile Include="Core\Domain\Interfaces\IHotkeysRepository.cs"/>
+        <Compile Include="Infrastructure\Repositories\HotkeysRepository.cs"/>
         <Compile Include="Properties\AssemblyInfo.cs"/>
     </ItemGroup>
     <ItemGroup>
-      <None Include="App.config" />
-      <None Include="packages.config" />
+        <None Include="App.config"/>
+        <None Include="packages.config"/>
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="hotkeys.ini"/>
+    </ItemGroup>
+    <ItemGroup>
+        <Folder Include="Application\Scripts\Player\"/>
+        <Folder Include="UI\CustomItems\"/>
+        <Folder Include="UI\Menus\"/>
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
