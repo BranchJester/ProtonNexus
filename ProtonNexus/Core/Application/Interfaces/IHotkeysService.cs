@@ -33,5 +33,8 @@ public interface IHotkeysService
     /// <param name="newKey">The new key to set.</param>
     void SetValue(string section, string keyName, string newKey);
 
+    /// <summary>
+    ///     Event that is raised when a hotkey is changed.
+    /// </summary>
     event Action<string, string, string> HotkeyChanged;
 }

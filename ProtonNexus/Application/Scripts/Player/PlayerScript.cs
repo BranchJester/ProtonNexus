@@ -24,10 +24,20 @@ public class PlayerScript : BaseScript
     {
         var fixPlayerKey = HotkeysService.GetValue(SectionEnum.Player, PlayerEnum.FixPlayer);
         if (IsKeyPressed(fixPlayerKey)) _playerService.FixPlayer();
+
+        var toggleInvincible = HotkeysService.GetValue(SectionEnum.Player, PlayerEnum.Invincible);
+        if (IsKeyPressed(toggleInvincible)) _playerService.Invincible = !_playerService.Invincible;
     }
 
     private void OnTick(object sender, EventArgs e)
     {
+        Invincible();
+    }
+
+    private void Invincible()
+    {
+        if (Game.Player.Character.IsInvincible == _playerService.Invincible) return;
+        Game.Player.Character.IsInvincible = _playerService.Invincible;
     }
 
     private void FixPlayer()

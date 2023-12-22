@@ -1,19 +1,18 @@
 using System;
 using System.Drawing;
-using System.Windows.Forms;
-using GTA;
 using LemonUI.Menus;
 using LemonUI.Scaleform;
 using ProtonNexus.Application.Extensions;
 using ProtonNexus.Application.Managers;
 using ProtonNexus.Core.Application.Interfaces;
-using Control = GTA.Control;
+using ProtonNexus.UI.Menus.Strategies;
 
 namespace ProtonNexus.UI.Menus.Abstract;
 
 public abstract class BaseMenu : NativeMenu
 {
     protected readonly IHotkeysService HotkeysService = ServiceManager.HotkeysService;
+    protected readonly ItemFactory ItemFactory = new();
 
     protected BaseMenu(string menuName) : base("Proton Nexus", menuName)
     {
@@ -21,7 +20,7 @@ public abstract class BaseMenu : NativeMenu
         Banner.Color = Color.FromArgb(255, 0, 0, 0);
         var usageInstructionalButton = new InstructionalButton("Change Usage Hotkey: PageDown", "");
         Buttons.Add(usageInstructionalButton);
-        
+
         var activationInstructionalButton = new InstructionalButton("Change Activation Hotkey: PageUp", "");
         Buttons.Add(activationInstructionalButton);
 
@@ -46,10 +45,14 @@ public abstract class BaseMenu : NativeMenu
         {
             if (item.Title.ToEnumStyle() == keyName)
             {
-                // Split the description at the hotkey-line and replace the hotkey
-                var descriptionParts = item.Description.Split(new[] { "\n\n~g~Hotkey:" }, StringSplitOptions.None);
-                if (descriptionParts.Length >= 2)
-                    item.Description = $"{descriptionParts[0]}\n\n~g~Hotkey: {newKey}";
+                var descriptionStrategy = item is NativeCheckboxItem
+                    ? (IItemDescriptionStrategy)new CustomNativeCheckboxItemDescriptionStrategy()
+                    : new CustomNativeItemDescriptionStrategy();
+
+                item.Description = descriptionStrategy.UpdateDescription(
+                    item.Description.Split(new[] { "\n\n" }, StringSplitOptions.None)[0],
+                    newKey
+                );
             }
         }
     }

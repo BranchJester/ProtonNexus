@@ -98,9 +98,15 @@
         <Compile Include="Core\Domain\Interfaces\IHotkeysRepository.cs"/>
         <Compile Include="Infrastructure\Repositories\HotkeysRepository.cs"/>
         <Compile Include="Properties\AssemblyInfo.cs"/>
+        <Compile Include="UI\CustomItems\CustomNativeCheckboxItem.cs"/>
+        <Compile Include="UI\CustomItems\CustomNativeItem.cs"/>
+        <Compile Include="UI\ItemFactory.cs"/>
         <Compile Include="UI\Menus\Abstract\BaseMenu.cs"/>
         <Compile Include="UI\Menus\MainMenu.cs"/>
         <Compile Include="UI\Menus\Player\PlayerMenu.cs"/>
+        <Compile Include="UI\Menus\Strategies\CustomNativeCheckboxItemDescriptionStrategy.cs"/>
+        <Compile Include="UI\Menus\Strategies\CustomNativeItemDescriptionStrategy.cs"/>
+        <Compile Include="UI\Menus\Strategies\IItemDescriptionStrategy.cs"/>
     </ItemGroup>
     <ItemGroup>
         <None Include="App.config"/>
@@ -108,9 +114,6 @@
     </ItemGroup>
     <ItemGroup>
         <Content Include="hotkeys.ini"/>
-    </ItemGroup>
-    <ItemGroup>
-        <Folder Include="UI\CustomItems\"/>
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
